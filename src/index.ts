@@ -3,6 +3,8 @@ import logger from "morgan";
 import cookieParser from "cookie-parser";
 import path from "path";
 import indexRouter from './routes/index';
+import 'reflect-metadata';
+import { AppDataSource } from './config/data-source';
 
 const app = express();
 
@@ -25,10 +27,16 @@ app.use("/", indexRouter);
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     res.locals.message = err.message;
     res.locals.error = req.app.get("env") === "development" ? err : {};
-    // render the error page
     res.status(500);
     res.render("error");
 });
+
+AppDataSource.initialize()
+    .then(() => {
+        console.log('DataSource đã được khởi tạo');
+    }).catch((err) => {
+        console.error('Lỗi trong quá trình khởi tạo DataSource:', err);
+    });
 
 const PORT = process.env.PORT || 8083;
 app.listen(PORT, () => {
