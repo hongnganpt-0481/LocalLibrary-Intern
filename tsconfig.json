@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "es6", /* Phiên bản ECMAScript mà bạn muốn dịch */
+    "module": "commonjs", /* Loại module: commonjs, esnext, ... */
+    "outDir": "./dist", /* Thư mục đầu ra */
+    "strict": true, /* Kiểm tra nghiêm ngặt */
+    "esModuleInterop": true, /* Hỗ trợ import/export giữa các module */
+    "skipLibCheck": true, /* Bỏ qua kiểm tra các file .d.ts */
+    "forceConsistentCasingInFileNames": true /* Đảm bảo những tên file giống nhau */
+  },
+  "include": [
+    "src/**/*"
+  ], /* Các tệp TypeScript để biên dịch */
+  "exclude": [
+    "node_modules"
+  ] /* Loại trừ các thư mục không cần thiết  */
+}
