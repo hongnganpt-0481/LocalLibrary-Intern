@@ -2,9 +2,9 @@ import express, { Request, Response, NextFunction } from "express";
 import logger from "morgan";
 import cookieParser from "cookie-parser";
 import path from "path";
-import indexRouter from './routes/index';
 import 'reflect-metadata';
 import { AppDataSource } from './config/data-source';
+import route from './routes';
 
 const app = express();
 
@@ -20,8 +20,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 // Khai báo các routes
-app.use("/", indexRouter);
-// app.use("/users", usersRouter);
+app.use('/', route);
 
 // Middleware xử lý lỗi
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
@@ -31,6 +30,7 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     res.render("error");
 });
 
+// Khởi tạo DataSource
 AppDataSource.initialize()
     .then(() => {
         console.log('DataSource đã được khởi tạo');
