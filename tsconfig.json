@@ -6,7 +6,9 @@
     "strict": true, /* Kiểm tra nghiêm ngặt */
     "esModuleInterop": true, /* Hỗ trợ import/export giữa các module */
     "skipLibCheck": true, /* Bỏ qua kiểm tra các file .d.ts */
-    "forceConsistentCasingInFileNames": true /* Đảm bảo những tên file giống nhau */
+    "forceConsistentCasingInFileNames": true, /* Đảm bảo những tên file giống nhau */
+    "experimentalDecorators": true, /* Enable experimental support for legacy experimental decorators. */
+    "emitDecoratorMetadata": true,
   },
   "include": [
     "src/**/*"
