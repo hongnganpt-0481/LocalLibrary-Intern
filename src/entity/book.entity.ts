@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, ManyToMany, JoinTable, OneToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, ManyToMany, JoinTable, OneToMany, JoinColumn } from 'typeorm';
 import { Author } from './author.entity';
 import { Genre } from './genre.entity';
 import { BookInstance } from './bookInstance.entity';
@@ -18,6 +18,7 @@ export class Book {
     isbn?: string;
 
     @ManyToOne(() => Author, author => author.books)
+    @JoinColumn({ name: 'author_id' })
     author!: Author;
 
     @ManyToMany(() => Genre)
