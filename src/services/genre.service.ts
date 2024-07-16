@@ -6,3 +6,10 @@ export async function getGenreCount(): Promise<number> {
     const count = await genreRepository.count();
     return count;
 }
+
+export const getGenres = async () => {
+    const genreRepository = AppDataSource.getRepository(Genre);
+    return await genreRepository.find({
+        select: ['id', 'name'], 
+    });
+};
