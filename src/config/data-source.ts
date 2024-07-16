@@ -19,7 +19,7 @@ export const AppDataSource = new DataSource({
     username: username!,
     password: password!,
     database: database!,
-    migrations: [join(__dirname, '../migration/*.{ts,js}')],
+    migrations: [join(__dirname, '../migrations/*.{ts,js}')],
 
     entities: [join(__dirname, '../entity/*.entity.{ts,js}')],
     synchronize: false, // Tắt tự động đồng bộ hóa schema

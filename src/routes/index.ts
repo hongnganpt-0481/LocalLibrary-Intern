@@ -1,15 +1,19 @@
-import { Router, Request, Response } from 'express';
-const router = Router();
+import { Router, Request, Response, NextFunction } from 'express';
+import authorRouter from './author.route';
+import bookRouter from './book.route';
+import genreRouter from './genre.route';
+import bookinstanceRouter from './bookInstance.route';
 
-/* GET users listing. */
-router.get('/users', (req: Request, res: Response) => {
-    res.send('respond with a resource');
+const router: Router = Router();
+
+router.get('/', (req: Request, res: Response, next: NextFunction) => {
+  res.render('index', { title: 'Express' });
 });
 
-/* GET home page. */
-router.get('/', (req: Request, res: Response) => {
-    res.render('index', { title: 'Express' });
-});
+router.use('/authors', authorRouter);
+router.use('/books', bookRouter);
+router.use('/genres', genreRouter);
+router.use('/bookinstances', bookinstanceRouter);
 
 export default router;
 
