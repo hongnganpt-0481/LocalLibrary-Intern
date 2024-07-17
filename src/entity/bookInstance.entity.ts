@@ -1,7 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
 import { Book } from './book.entity';
 
-@Entity()
+@Entity('bookinstance')
 export class BookInstance {
     @PrimaryGeneratedColumn()
     id!: number;
@@ -13,8 +13,9 @@ export class BookInstance {
     status!: string;
 
     @Column({ nullable: true })
-    dueBack?: Date;
+    due_back?: Date;
 
     @ManyToOne(() => Book, book => book.instances)
+    @JoinColumn({ name: 'book_id' })
     book!: Book;
 }

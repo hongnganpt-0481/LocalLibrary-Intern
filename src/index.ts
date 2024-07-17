@@ -5,6 +5,8 @@ import path from "path";
 import 'reflect-metadata';
 import { AppDataSource } from './config/data-source';
 import route from './routes';
+import i18next from './i18n';
+import i18nextMiddleware from 'i18next-http-middleware';
 
 const app = express();
 
@@ -19,8 +21,24 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
+// Sử dụng i18next middleware
+app.use(i18nextMiddleware.handle(i18next));
+
+// Cấu hình middleware để gán hàm t vào biến cục bộ
+app.use((req: Request, res: Response, next: NextFunction) => {
+    res.locals.t = req.t;
+    next();
+});
+
 // Khai báo các routes
 app.use('/', route);
+
+// Catch 404 and forward to error handler
+app.use((req: Request, res: Response, next: NextFunction) => {
+    const err = new Error('Not Found');
+    res.status(404);
+    next(err);
+});
 
 // Middleware xử lý lỗi
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {

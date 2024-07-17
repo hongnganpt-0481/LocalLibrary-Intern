@@ -1,10 +1,31 @@
 import { Request, Response, NextFunction } from 'express';
 import asyncHandler from 'express-async-handler';
+import * as libraryService from '../services/service';
+
+export const index = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+  const {
+    numBooks,
+    numAuthors,
+    numGenres,
+    numBookInstances,
+    numAvailableBookInstances
+  } = await libraryService.getCounts();
+
+  res.render('index', {
+    title: 'Sun Asterisk',
+    book_count: numBooks,
+    author_count: numAuthors,
+    genre_count: numGenres,
+    book_instance_count: numBookInstances,
+    book_instance_available_count: numAvailableBookInstances
+  });
+});
 
 // Hiển thị danh sách tất cả các sách.
-export const bookList = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-  res.send('NOT IMPLEMENTED: Book list');
-});
+// export const bookList = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+//   const books = await booksService.getBooks();
+//   res.render('books/index', { books });
+// });
 
 // Hiển thị trang chi tiết của một sách cụ thể.
 export const bookDetail = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {

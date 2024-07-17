@@ -1,4 +1,3 @@
-// routes/book.route.ts
 import { Router } from 'express';
 import * as bookController from '../controllers/book.controller';
 
@@ -26,6 +25,6 @@ router.post('/:id/update', bookController.bookUpdatePost);
 router.get('/:id', bookController.bookDetail);
 
 // GET yêu cầu danh sách sách.
-router.get('/', bookController.bookList);
+// router.get('/', bookController.bookList);
 
 export default router;
