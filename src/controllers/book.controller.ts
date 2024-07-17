@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import asyncHandler from 'express-async-handler';
 import * as libraryService from '../services/service';
+import * as bookService from '../services/book.service';
 
 export const index = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   const {
@@ -22,10 +23,10 @@ export const index = asyncHandler(async (req: Request, res: Response, next: Next
 });
 
 // Hiển thị danh sách tất cả các sách.
-// export const bookList = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-//   const books = await booksService.getBooks();
-//   res.render('books/index', { books });
-// });
+export const bookList = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+  const books = await bookService.getBooks();
+  res.render('books/index', { books });
+});
 
 // Hiển thị trang chi tiết của một sách cụ thể.
 export const bookDetail = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
@@ -61,3 +62,4 @@ export const bookUpdateGet = asyncHandler(async (req: Request, res: Response, ne
 export const bookUpdatePost = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   res.send('NOT IMPLEMENTED: Book update POST');
 });
+

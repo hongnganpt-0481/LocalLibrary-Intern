@@ -25,6 +25,6 @@ router.post('/:id/update', bookController.bookUpdatePost);
 router.get('/:id', bookController.bookDetail);
 
 // GET yêu cầu danh sách sách.
-// router.get('/', bookController.bookList);
+router.get('/', bookController.bookList);
 
 export default router;

@@ -22,5 +22,12 @@
     "english": "English",
     "vietnamese": "Vietnamese"
   },
-  "titleListBook": "List of books"
+  "titleListBook": "List of books",
+  "noBook": "There are no books",
+  "titleListAuthor": "List of authors",
+  "noAuthor": "There are no authors",
+  "titleListGenre": "List of genres",
+  "noGenre": "There are no genres",
+  "titleListBookInstance": "List of bookinstances",
+  "noBookInstance": "There are no bookinstances"
 }

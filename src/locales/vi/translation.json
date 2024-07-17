@@ -22,5 +22,12 @@
     "english": "Tiếng Anh",
     "vietnamese": "Tiếng Việt"
   },
-  "titleListBook": "Danh sách sách"
+  "titleListBook": "Danh sách sách",
+  "noBook": "Không có quyển sách nào",
+  "titleListAuthor": "Danh sách tác giả",
+  "noAuthor": "Không có tác giả nào",
+  "titleListGenre": "Danh sách thể loại",
+  "noGenre": "Không có thể loại nào",
+  "titleListBookInstance": "Danh sách bản sao sách",
+  "noBookInstance": "Không có bản sao sách nào"
 }

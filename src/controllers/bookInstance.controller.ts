@@ -1,9 +1,11 @@
 import { Request, Response, NextFunction } from 'express';
 import asyncHandler from 'express-async-handler';
+import * as bookInstanceService from '../services/bookinstance.service';
 
-// Hiển thị danh sách tất cả các bản sao của sách.
-export const bookinstanceList = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-  res.send('NOT IMPLEMENTED: BookInstance list');
+// Hiển thị danh sách tất cả các bản sao sách
+export const bookInstanceList = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+  const bookInstances = await bookInstanceService.getBookInstances();
+  res.render('bookInstances/index', { bookInstances });
 });
 
 // Hiển thị trang chi tiết của một bản sao sách cụ thể.

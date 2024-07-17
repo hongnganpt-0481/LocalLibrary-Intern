@@ -13,3 +13,11 @@ export async function getAvailableBookInstancesCount(): Promise<number> {
     const [, availableCount] = await bookInstanceRepository.findAndCount({ where: { status: BookStatus.AVAILABLE } });
     return availableCount;
 }
+
+export const getBookInstances = async () => {
+    const bookInstanceRepository = AppDataSource.getRepository(BookInstance);
+    return await bookInstanceRepository.find({
+        select: ['id', 'imprint', 'status', 'due_back'],
+        relations: ['book'],
+    });
+};

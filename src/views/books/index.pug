@@ -1,0 +1,12 @@
+extends ../layout
+
+block content
+  h1= t('titleListBook')
+  if books.length
+    ul
+      each book in books
+        li
+          a(href=book.url) #{book.title}
+          |  (#{book.author ? book.author.firstName : 'Unknown'})
+  else
+    p = t('noBook')

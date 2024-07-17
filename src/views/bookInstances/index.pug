@@ -1,0 +1,11 @@
+extends ../layout
+
+block content
+  h1= t('titleListBookInstance')
+  if bookInstances.length
+    ul
+      each bookInstance in bookInstances
+        li
+          a(href=bookInstance.url) #{bookInstance.book.title} - #{bookInstance.imprint} (#{bookInstance.status})
+  else
+    p = t('noBookInstance')
