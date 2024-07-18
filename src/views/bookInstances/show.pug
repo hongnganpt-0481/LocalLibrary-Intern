@@ -1,0 +1,10 @@
+extends ../layout
+
+block content
+
+    div
+        h1 #[strong #{t('ID')}: ] #{bookInstance.id}
+        p #[strong #{t('Title')}: ] #{bookInstance.book.title}
+        p #[strong #{t('Imprint')}: ] #{bookInstance.imprint}
+        p #[strong #{t('Status')}: ] #{bookInstance.status}
+        p #[strong #{t('Due Back')}: ] #{bookInstance.due_back}

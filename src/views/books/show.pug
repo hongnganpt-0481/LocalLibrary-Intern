@@ -1,0 +1,45 @@
+extends ../layout
+
+block content
+    h1= book.title
+    p #[strong #{t('titles.author')}: ]
+        a(href=book.author.url) #{book.author.firstName} #{book.author.familyName}
+    p #[strong #{t('titles.summary')}: ] #{book.summary}
+    p #[strong #{t('titles.isbn')}: ] #{book.isbn}
+
+    if bookGenres && bookGenres.length > 0
+        p #[strong #{t('titles.genres')}: ]
+            each val, index in bookGenres
+                a(href=val.url) #{val.name}
+                if index < bookGenres.length - 1
+                    | ,
+                else
+                    | 
+    else
+        p #{t('statuses.noGenres')}
+
+    div.custom-div
+        h4 #{t('titles.copies')}
+        hr
+
+        if bookInstances && bookInstances.length > 0
+            each val in bookInstances
+                hr
+                if val.status === 'Available'
+                    p.text-success #{t('statuses.available')}
+                else if val.status === 'Maintenance'
+                    p.text-danger #{t('statuses.maintenance')}
+                else
+                    p.text-warning #{val.status}
+
+                p #[strong #{t('titles.imprint')}: ] #{val.imprint}
+
+                if val.status !== 'Available'
+                    p #[strong #{t('titles.dueBack')}: ] #{val.due_back}
+
+                p
+                    strong #{t('titles.id')}: 
+                    a(href=val.url) #{val.id}
+
+        else
+            p #{t('statuses.noCopies')}

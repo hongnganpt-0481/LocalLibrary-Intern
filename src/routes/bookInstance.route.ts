@@ -23,7 +23,7 @@ router.get('/:id/update', bookinstanceController.bookinstanceUpdateGet);
 router.post('/:id/update', bookinstanceController.bookinstanceUpdatePost);
 
 // GET yêu cầu hiển thị bản sao sách cụ thể.
-router.get('/:id', bookinstanceController.bookinstanceDetail);
+router.get('/:id', bookinstanceController.bookInstanceDetail);
 
 // GET yêu cầu danh sách bản sao sách.
 router.get('/', bookinstanceController.bookInstanceList);

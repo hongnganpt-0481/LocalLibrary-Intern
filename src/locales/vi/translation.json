@@ -29,5 +29,44 @@
   "titleListGenre": "Danh sách thể loại",
   "noGenre": "Không có thể loại nào",
   "titleListBookInstance": "Danh sách bản sao sách",
-  "noBookInstance": "Không có bản sao sách nào"
+  "noBookInstance": "Không có bản sao sách nào",
+  "titles": {
+    "author": "Tác giả",
+    "summary": "Tóm tắt",
+    "isbn": "ISBN",
+    "genres": "Thể loại",
+    "copies": "Bản sao",
+    "imprint": "In ấn",
+    "dueBack": "Hạn trả",
+    "id": "Mã số"
+  },
+  "statuses": {
+    "available": "Có sẵn",
+    "maintenance": "Bảo trì",
+    "noCopies": "Hiện không có bản sao của sách này trong thư viện."
+  },
+  "ID": "ID",
+  "Title": "Tiêu đề",
+  "Imprint": "Nhà xuất bản",
+  "Status": "Trạng thái",
+  "Due Back": "Ngày trả lại",
+  "Author": "Tác giả",
+  "DateOfBirth": "Ngày sinh",
+  "Present": "Hiện tại",
+  "BooksByAuthor": "Sách của tác giả",
+  "NoBooksByAuthor": "Không có sách nào của tác giả này",
+  "genreName": "Thể loại: {{genreName}}",
+  "booksInGenre": "Danh sách sách trong thể loại này:",
+  "noBooksInGenre": "Không có sách nào thuộc thể loại này.",
+  "errors": {
+    "invalidId": "Tham số ID không hợp lệ",
+    "authorNotFound":"Không tìm thấy tác giả",
+    "failedToRetrieveAuthorDetails": "Không thể lấy chi tiết tác giả.",
+    "bookNotFound":"Không tìm thấy sách",
+    "failedToRetrieveBookDetails": "Không thể lấy chi tiết sách.",
+    "genreNotFound":"Không tìm thấy thể loại",
+    "failedToRetrieveGenreDetails": "Không thể lấy chi tiết thể loại",
+    "bookinstanceNotFound":"Không tìm thấy bản sao sách",
+    "failedToRetrieveBookInstance": "Không thể lấy chi tiết bản sao sách"
+  }
 }

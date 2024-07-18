@@ -1,0 +1,14 @@
+extends ../layout
+
+block content
+    h1 #{t('genreName', { genreName: genre.name })} 
+    
+    if books && books.length > 0 
+        h3 #{t('booksInGenre')} 
+        ul
+            each book in books 
+                li
+                    h4(style="color: blue;")= book.title 
+                    p #{book.summary} 
+    else
+        p #{t('noBooksInGenre')} 

@@ -23,7 +23,7 @@ router.get('/:id/update', genreController.genreUpdateGet);
 router.post('/:id/update', genreController.genreUpdatePost);
 
 // GET yêu cầu hiển thị thể loại cụ thể.
-router.get('/:id', genreController.genreDetail);
+router.get('/:id', genreController.booksByGenre);
 
 // GET yêu cầu danh sách thể loại.
 router.get('/', genreController.genreList);

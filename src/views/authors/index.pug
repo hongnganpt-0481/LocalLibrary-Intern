@@ -2,10 +2,11 @@ extends ../layout
 
 block content
   h1= t('titleListAuthor')
+
   if authors.length
     ul
       each author in authors
         li
-          a(href=author.url) #{author.familyName}, #{author.firstName} (#{author.dateOfBirth.getFullYear()} - #{author.dateOfDeath ? author.dateOfDeath.getFullYear() : 'Present'})
+          a(href=`/authors/${author.id}`) #{author.familyName}, #{author.firstName} (#{author.dateOfBirth.getFullYear()} - #{author.dateOfDeath ? author.dateOfDeath.getFullYear() : 'Present'})
   else
-    p = t('noAuthor')
+    p= t('noAuthor')

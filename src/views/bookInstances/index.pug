@@ -6,6 +6,6 @@ block content
     ul
       each bookInstance in bookInstances
         li
-          a(href=bookInstance.url) #{bookInstance.book.title} - #{bookInstance.imprint} (#{bookInstance.status})
+         a(href=`/bookInstances/${bookInstance.id}`) #{bookInstance.book.title} - #{bookInstance.imprint} (#{bookInstance.status})
   else
     p = t('noBookInstance')

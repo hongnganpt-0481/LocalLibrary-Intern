@@ -29,5 +29,46 @@
   "titleListGenre": "List of genres",
   "noGenre": "There are no genres",
   "titleListBookInstance": "List of bookinstances",
-  "noBookInstance": "There are no bookinstances"
+  "noBookInstance": "There are no bookinstances",
+  "titles": {
+    "author": "Author",
+    "summary": "Summary",
+    "isbn": "ISBN",
+    "genres": "Genres",
+    "copies": "Copies",
+    "imprint": "Imprint",
+    "dueBack": "Due back",
+    "id": "Id"
+  },
+  "statuses": {
+    "available": "Available",
+    "maintenance": "Maintenance",
+    "noCopies": "There are no copies of this book in the library."
+  },
+  "noBooksByAuthor": "No books by this author.",
+  "booksByAuthor": "Books",
+  "ID": "ID",
+  "Title": "Title",
+  "Imprint": "Imprint",
+  "Status": "Status",
+  "Due Back": "Due Back",
+  "Author": "Author",
+  "DateOfBirth": "Date of birth",
+  "Present": "Present",
+  "BooksByAuthor": "Books by this author",
+  "NoBooksByAuthor": "No books by this author",
+  "genreName": "Genre: {{genreName}}",
+  "booksInGenre": "Books in this genre:",
+  "noBooksInGenre": "No books available in this genre.",
+  "errors": {
+    "invalidId": "Invalid ID parameter",
+    "authorNotFound":"author Not Found",
+    "failedToRetrieveAuthorDetails": "Failed to retrieve author details.",
+    "bookNotFound":"book Not Found",
+    "failedToRetrieveBookDetails": "Failed to retrieve book details.",
+    "genreNotFound":"genre Not Found",
+    "failedToRetrieveGenreDetails": "Failed to retrieve Genre details.",
+    "bookinstanceNotFound":"bookinstance Not Found",
+    "failedToRetrieveBookInstance": "Failed to retrieve BookInstance details."
+  }
 }
