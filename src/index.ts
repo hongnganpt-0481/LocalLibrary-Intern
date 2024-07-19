@@ -7,6 +7,8 @@ import { AppDataSource } from './config/data-source';
 import route from './routes';
 import i18next from './i18n';
 import i18nextMiddleware from 'i18next-http-middleware';
+import flash from 'connect-flash';
+
 
 const app = express();
 
@@ -29,6 +31,8 @@ app.use((req: Request, res: Response, next: NextFunction) => {
     res.locals.t = req.t;
     next();
 });
+
+app.use(flash());
 
 // Khai báo các routes
 app.use('/', route);

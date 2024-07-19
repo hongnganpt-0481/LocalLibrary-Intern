@@ -20,9 +20,13 @@ export const AppDataSource = new DataSource({
     password: password!,
     database: database!,
     migrations: [join(__dirname, '../migrations/*.{ts,js}')],
-
-    entities: [join(__dirname, '../entity/*.entity.{ts,js}')],
-    synchronize: false, // Tắt tự động đồng bộ hóa schema
-    logging: false,     // Tắt logging SQL queries
+    entities: [
+        Author,
+        Book,
+        BookInstance,
+        Genre,
+    ],
+    synchronize: false, 
+    logging: false,    
     subscribers: [],
 });

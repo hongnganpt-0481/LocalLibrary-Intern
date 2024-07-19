@@ -22,9 +22,13 @@ export class Book {
     author!: Author;
 
     @ManyToMany(() => Genre)
-    @JoinTable()
+    @JoinTable({
+        name: 'bookGenre',
+        joinColumn: { name: 'book_id', referencedColumnName: 'id' },
+        inverseJoinColumn: { name: 'genre_id', referencedColumnName: 'id' },
+    })
     genres?: Genre[];
 
-    @OneToMany(() => BookInstance, (instance: BookInstance) => instance.book)
-    instances!: BookInstance[];
+    @OneToMany(() => BookInstance, instance => instance.book)
+    instances!: BookInstance[]; 
 }

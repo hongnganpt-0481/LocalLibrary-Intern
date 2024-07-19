@@ -1,0 +1,19 @@
+extends ../layout
+
+block content
+    h1
+        strong= t('Author')
+        | : #{author.firstName} #{author.familyName}
+    p
+        strong= t('DateOfBirth')
+        | : #{author.dateOfBirth} - #{author.dateOfDeath ? author.dateOfDeath : t('Present')}
+
+    if author.books && author.books.length > 0
+        h3= t('BooksByAuthor')
+        ul
+            each book in author.books
+                li
+                    h4(style="color: blue;")= book.title
+                    p #{book.summary}
+    else
+        p= t('NoBooksByAuthor')
