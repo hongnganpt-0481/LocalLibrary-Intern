@@ -5,6 +5,11 @@ import * as bookService from '../services/book.service';
 import { BookInstance } from '../entity/bookInstance.entity';
 import { getBookDetails } from '../services/book.service';
 import i18next from 'i18next';
+import { body, validationResult } from 'express-validator';
+import { Book } from '../entity/book.entity';
+import * as authorService from '../services/author.service';
+import * as genreService from '../services/genre.service';
+
 
 export const index = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   const {
@@ -59,7 +64,7 @@ export const bookDetail = asyncHandler(async (req: Request, res: Response, next:
       book,
       bookInstances: book.instances,
       bookGenres: book.genres,
-      bookInstanceStatuses: BookInstance 
+      bookInstanceStatuses: BookInstance
     });
   } catch (error) {
     req.flash('error', i18next.t('errors.failedToRetrieveBookDetails'));
@@ -67,15 +72,97 @@ export const bookDetail = asyncHandler(async (req: Request, res: Response, next:
   }
 });
 
+// Hàm validate cho các trường sách
+export const validateBookFields = () => [
+  body('title')
+    .trim()
+    .isLength({ min: 1 })
+    .withMessage(i18next.t('book.titleError'))
+    .escape(),
+
+  body('author')
+    .trim()
+    .isLength({ min: 1 })
+    .withMessage(i18next.t('book.authorError'))
+    .escape(),
+
+  body('summary')
+    .trim()
+    .isLength({ min: 1 })
+    .withMessage(i18next.t('book.summaryError'))
+    .escape(),
+
+  body('isbn')
+    .trim()
+    .isLength({ min: 1 })
+    .withMessage(i18next.t('book.isbnError'))
+    .escape(),
+
+  body('genre.*')  // Validate các giá trị của genre
+    .optional()
+    .escape(),
+];
+
 // Hiển thị form tạo mới sách trong GET.
 export const bookCreateGet = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-  res.send('NOT IMPLEMENTED: Book create GET');
+  const [allAuthors, allGenres] = await Promise.all([
+    authorService.getAuthors(),
+    genreService.getGenres()
+  ]);
+  res.render('books/form', {
+    title: req.t('book.createBook'),
+    authors: allAuthors,
+    genres: allGenres
+  });
 });
 
 // Xử lý tạo mới sách trong POST.
-export const bookCreatePost = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-  res.send('NOT IMPLEMENTED: Book create POST');
-});
+export const bookCreatePost = [
+  ...validateBookFields(), 
+  asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+    if (!Array.isArray(req.body.genre)) {
+      req.body.genre = typeof req.body.genre === 'undefined' ? [] : [req.body.genre];
+    }
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      const allAuthors = await authorService.getAuthors();
+      const allGenres = await genreService.getGenres();
+
+      return res.render('books/form', {
+        title: i18next.t('book.createBook'),
+        authors: allAuthors,
+        genres: allGenres,
+        book: req.body,
+        errors: errors.array()
+      });
+    }
+
+    const authorId = parseInt(req.body.author);
+    const author = await authorService.getAuthorById(authorId);
+    if (!author) {
+      req.flash('error', i18next.t('book.authorNotFound'));
+      return res.redirect('/books/form');
+    }
+
+    const genreIds = req.body.genre.map((id: string) => parseInt(id));
+    const genres = await genreService.getGenreByIds(genreIds);
+    if (genres.length !== genreIds.length) {
+      req.flash('error', i18next.t('book.genresNotFound'));
+      return res.redirect('/books/form');
+    }
+
+    const book = new Book();
+    book.title = req.body.title;
+    book.author = author;
+    book.summary = req.body.summary;
+    book.isbn = req.body.isbn;
+    book.genres = genres;
+
+    await bookService.saveBook(book);
+    res.redirect(`/books/${book.id}`);
+  })
+];
 
 // Hiển thị form xóa sách trong GET.
 export const bookDeleteGet = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
@@ -89,10 +176,71 @@ export const bookDeletePost = asyncHandler(async (req: Request, res: Response, n
 
 // Hiển thị form cập nhật sách trong GET.
 export const bookUpdateGet = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-  res.send(`NOT IMPLEMENTED: Book update GET: ${req.params.id}`);
+  const id = parseInt(req.params.id);
+  const [book, allAuthors, allGenres] = await Promise.all([
+    bookService.getBookById(id),
+    authorService.getAuthors(),
+    genreService.getGenres()
+  ]);
+
+  if (!book) {
+    return res.redirect('/books');
+  }
+
+  res.render('books/update', {
+    title: i18next.t('updateBook'),
+    action: `/books/${id}/update`, 
+    authors: allAuthors,
+    genres: allGenres,
+    book: book,
+    errors: []
+  });
 });
 
 // Xử lý cập nhật sách trong POST.
-export const bookUpdatePost = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-  res.send('NOT IMPLEMENTED: Book update POST');
-});
+export const bookUpdatePost = [
+  (req: Request, res: Response, next: NextFunction) => {
+    if (!Array.isArray(req.body.genre)) {
+      req.body.genre = typeof req.body.genre === 'undefined' ? [] : [req.body.genre];
+    }
+    next();
+  },
+
+  ...validateBookFields(), 
+  asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+    const id = parseInt(req.params.id, 10);
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      const [allAuthors, allGenres] = await Promise.all([
+        authorService.getAuthors(),
+        genreService.getGenres()
+      ]);
+
+      res.render('books/update', {
+        title: i18next.t('updateBook'),
+        action: `/books/${id}/update`, 
+        authors: allAuthors,
+        genres: allGenres,
+        book: req.body,
+        errors: errors.array()
+      });
+      return;
+    }
+
+    try {
+      const updatedBook = await bookService.updateBookById(
+        id,
+        req.body.title,
+        parseInt(req.body.author, 10),
+        req.body.summary,
+        req.body.isbn,
+        req.body.genre.map((genreId: string) => parseInt(genreId, 10))
+      );
+
+      res.redirect(`/books/${updatedBook.id}`);
+    } catch (error) {
+      next(error);
+    }
+  })
+];

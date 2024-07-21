@@ -43,3 +43,8 @@ block content
 
         else
             p #{t('statuses.noCopies')}
+    hr
+    p
+        a(href=`${book.id}/delete`)= t('Delete Book')        
+    p
+        a(href=`${book.id}/update`)= t('Update Book')

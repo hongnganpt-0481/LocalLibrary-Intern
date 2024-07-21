@@ -1,0 +1,48 @@
+extends ../layout
+
+block content
+  h1 #{t('createAuthor.title')}
+
+  form(method='POST' action='create')
+    .form-group
+      label(for='firstName') #{t('createAuthor.firstNameLabel')}
+      input#firstName.form-control(
+        type='text'
+        placeholder=t('createAuthor.firstNamePlaceholder')
+        name='firstName'
+        required
+        value=author ? author.firstName : ''
+      )
+
+    .form-group
+      label(for='familyName') #{t('createAuthor.familyNameLabel')}
+      input#familyName.form-control(
+        type='text'
+        placeholder=t('createAuthor.familyNamePlaceholder')
+        name='familyName'
+        required
+        value=author ? author.familyName : ''
+      )
+
+    .form-group
+      label(for='dateOfBirth') #{t('createAuthor.dateOfBirthLabel')}
+      input#dateOfBirth.form-control(
+        type='date'
+        name='dateOfBirth'
+        value=author && author.dateOfBirth ? author.dateOfBirth.toISOString().substr(0, 10) : ''
+      )
+
+    .form-group
+      label(for='dateOfDeath') #{t('createAuthor.dateOfDeathLabel')}
+      input#dateOfDeath.form-control(
+        type='date'
+        name='dateOfDeath'
+        value=author && author.dateOfDeath ? author.dateOfDeath.toISOString().substr(0, 10) : ''
+      )
+
+    button.btn.btn-primary(type='submit') #{t('createAuthor.submit')}
+
+  if errors
+    ul
+      for error in errors
+        li!= error.msg

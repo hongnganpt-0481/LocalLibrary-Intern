@@ -27,3 +27,7 @@ export const getBookInstanceById = async (id: number): Promise<BookInstance | un
         relations: ['book']
     }) || undefined;
 };
+
+export const saveBookInstance = async (bookInstance: BookInstance) => {
+    await bookInstanceRepository.save(bookInstance);
+};

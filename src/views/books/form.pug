@@ -1,0 +1,58 @@
+extends ../layout
+
+block content
+  h1 #{t(title)}
+
+  form(method='POST', action=action)
+    .form-group
+      label(for='title') #{t('book.title')}
+      input#title.form-control(
+        type='text'
+        name='title'
+        required
+        value=book ? book.title : ''
+      )
+    
+    .form-group
+      label(for='author') #{t('book.author')}
+      select#author.form-control(name='author', required)
+        option(value='') #{t('book.selectAuthor')}
+        each author in authors
+          option(value=author.id, selected=(book && book.author && author.id == book.author.id)) #{author.firstName} #{author.familyName}
+
+    .form-group
+      label(for='summary') #{t('book.summary')}
+      textarea#summary.form-control(
+        name='summary'
+        required
+      ) #{book ? book.summary : ''}
+
+    .form-group
+      label(for='isbn') #{t('book.isbn')}
+      input#isbn.form-control(
+        type='text'
+        name='isbn'
+        required
+        value=book ? book.isbn : ''
+      )
+    
+    .form-group
+      label(for='genre') #{t('book.genre')}
+
+      each genre in genres
+        div.form-check.form-check-inline
+          input.form-check-input(
+            type='checkbox'
+            name='genre'
+            value=genre.id
+            checked=(book && book.genres && book.genres.some(g => g.id == genre.id))
+          )
+          label.form-check-label #{genre.name}
+    
+    .form-group
+      button.btn.btn-primary(type='submit') #{t('book.submit')}
+    
+  if errors
+    ul
+      each error in errors
+        li #{error.msg}

@@ -8,7 +8,7 @@ const router: Router = Router();
 router.get('/create', bookinstanceController.bookinstanceCreateGet);
 
 // POST yêu cầu tạo mới bản sao sách.
-router.post('/create', bookinstanceController.bookinstanceCreatePost);
+router.post('/create', bookinstanceController.bookInstanceCreatePost);
 
 // GET yêu cầu xóa bản sao sách.
 router.get('/:id/delete', bookinstanceController.bookinstanceDeleteGet);
