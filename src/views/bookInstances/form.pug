@@ -1,0 +1,35 @@
+extends ../layout
+
+block content
+  h1 #{t('bookInstance.createBookInstance')}
+
+  form(action='/bookinstances/create', method='POST')
+    div.form-group
+      label(for='book') #{t('bookInstance.book')}
+      select#book.form-control(name='book', required)
+        option(value='') #{t('bookInstance.selectBook')}
+        each book in books
+          option(value=book.id) #{book.title}
+
+    div.form-group
+      label(for='imprint') #{t('bookInstance.imprint')}
+      input#imprint.form-control(type='text', name='imprint', required)
+
+    div.form-group
+      label(for='status') #{t('bookInstance.status')}
+      select#status.form-control(name='status', required)
+        option(value='Available') #{t('bookInstance.status1.Available')}
+        option(value='Maintenance') #{t('bookInstance.status1.Maintenance')}
+        option(value='Loaned') #{t('bookInstance.status1.Loaned')}
+        option(value='Reserved') #{t('bookInstance.status1.Reserved')}
+
+    div.form-group
+      label(for='due_back') #{t('bookInstance.dueBack')}
+      input#due_back.form-control(type='date', name='due_back')
+
+    button.btn.btn-primary(type='submit') #{t('bookInstance.submit')}
+
+  if errors.length > 0
+    ul
+      each error in errors
+        li #{error.msg}

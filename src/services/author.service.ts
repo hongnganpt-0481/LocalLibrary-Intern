@@ -25,3 +25,21 @@ export const getAuthorDetails = async (id: number) => {
     relations: ['books']
   });
 };
+
+export const saveAuthor = async (author: Author) => {
+  await authorRepository.save(author);
+};
+
+export const findAuthorByName = async (firstName: string, familyName: string) => {
+  return authorRepository.findOne({
+    where: { firstName, familyName }
+  });
+};
+
+export const getAuthorById = async (id: number): Promise<Author | null> => {
+  return await authorRepository.findOneBy({ id });
+};
+
+export const deleteAuthorById = async (authorId: number): Promise<void> => {
+  await authorRepository.delete(authorId);
+};

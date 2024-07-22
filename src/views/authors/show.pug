@@ -17,3 +17,7 @@ block content
                     p #{book.summary}
     else
         p= t('NoBooksByAuthor')
+
+    hr
+    p
+        a(href=`${author.id}/delete`)= t('DeleteAuthor')

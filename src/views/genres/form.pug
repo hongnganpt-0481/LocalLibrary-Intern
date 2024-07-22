@@ -1,0 +1,22 @@
+extends ../layout
+
+block content
+  h1 #{t('createGenre.title')}
+
+  form(method='POST' action='create')
+    .form-group
+      label(for='name') #{t('createGenre.label')}
+      input#name.form-control(
+        type='text'
+        placeholder!= t('createGenre.placeholder')
+        name='name'
+        required
+        value=genre ? genre.name : ''
+      )
+
+    button.btn.btn-primary(type='submit') #{t('createGenre.submit')}
+
+  if errors
+    ul
+      for error in errors
+        li!= error.msg

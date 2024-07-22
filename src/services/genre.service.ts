@@ -19,3 +19,15 @@ export async function getGenreById(genreId: number): Promise<Genre | undefined> 
         where: { id: genreId }
     }) || undefined;
 };
+
+export const findGenreByName = async (name: string) => {
+    return await genreRepository.findOne({ where: { name } });
+};
+
+export const saveGenre = async (genre: Genre) => {
+    return await genreRepository.save(genre);
+};
+
+export const getGenreByIds = async (ids: number[]): Promise<Genre[]> => {
+    return await genreRepository.findByIds(ids);
+};

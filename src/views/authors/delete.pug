@@ -1,0 +1,26 @@
+extends ../layout
+
+block content
+    h1
+        strong= t('DeleteAuthor')
+        | : #{author.firstName} #{author.familyName}
+
+    p= t('DeleteConfirmationMessage')
+
+    if authorBooks && authorBooks.length > 0
+        p
+            strong= t('DeleteTheFollowingBooks')
+        div.authorBooks
+            h4= t('Books')
+            dl
+                each book in authorBooks
+                    dt
+                        a(href=book.url) #{book.title}
+                    dd #{book.summary}
+    else
+        p= t('NoBooksByAuthor')
+
+    form(method='POST')
+        div.form-group
+            input#authorid.form-control(type='hidden', name='authorid', value=author._id)
+            button.btn.btn-primary(type='submit')= t('Delete')

@@ -4,6 +4,9 @@ import * as genreService from '../services/genre.service';
 import { getBooksByGenreId } from '../services/book.service';
 import { getGenreById } from '../services/genre.service';
 import i18next from 'i18next';
+import { Genre } from '../entity/genre.entity';
+import { findGenreByName, saveGenre } from '../services/genre.service';
+import { body, validationResult } from 'express-validator';
 
 // Hiển thị danh sách tất cả các thể loại sách
 export const genreList = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
@@ -45,13 +48,37 @@ export const booksByGenre = async (req: Request, res: Response): Promise<void> =
 
 // Hiển thị form tạo mới thể loại trong GET.
 export const genreCreateGet = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-  res.send('NOT IMPLEMENTED: Genre create GET');
+  res.render('genres/form', { 
+    title: i18next.t('createGenre.title')
+  });
 });
 
 // Xử lý tạo mới thể loại trong POST.
-export const genreCreatePost = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-  res.send('NOT IMPLEMENTED: Genre create POST');
-});
+export const genreCreatePost = [
+  body('name', i18next.t('createGenre.validationName')).trim().isLength({ min: 3 }).escape(),
+  asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+    const errors = validationResult(req);
+    const genre = new Genre();
+    genre.name = req.body.name;
+
+    if (!errors.isEmpty()) {
+      res.render('genres/form', {
+        title: i18next.t('createGenre.title'),
+        genre: genre,
+        errors: errors.array()
+      });
+      return;
+    } else {
+      const genreExists = await findGenreByName(req.body.name);
+      if (genreExists) {
+        res.redirect(`/genres/${genreExists.id}`); 
+      } else {
+        await saveGenre(genre);
+        res.redirect(`/genres/${genre.id}`); 
+      }
+    }
+  })
+];
 
 // Hiển thị form xóa thể loại trong GET.
 export const genreDeleteGet = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {

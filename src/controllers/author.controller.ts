@@ -1,8 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
 import asyncHandler from 'express-async-handler';
 import * as authorService from '../services/author.service';
-import { getAuthorDetails } from '../services/author.service';
+import { getAuthorDetails, saveAuthor, findAuthorByName } from '../services/author.service';
 import i18next from 'i18next';
+import { body, validationResult } from 'express-validator';
+import { Author } from '../entity/author.entity';
 
 // Hiển thị danh sách tất cả các tác giả
 export const authorList = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
@@ -43,22 +45,70 @@ export const authorDetail = async (req: Request, res: Response) => {
 
 // Hiển thị form tạo mới tác giả trong GET.
 export const authorCreateGet = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-  res.send('NOT IMPLEMENTED: Author create GET');
+  res.render('authors/form', { title: req.t('createAuthor.title') });
 });
 
 // Xử lý tạo mới tác giả trong POST.
-export const authorCreatePost = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-  res.send('NOT IMPLEMENTED: Author create POST');
-});
+export const authorCreatePost = [
+  body('firstName',  i18next.t('createAuthor.author_firstName_length')).trim().isLength({ min: 3 }).escape(),
+  body('familyName', i18next.t('createAuthor.author_familyName_length')).trim().isLength({ min: 3 }).escape(),
+  asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+    const errors = validationResult(req);
+    const author = new Author();
+    author.firstName = req.body.firstName;
+    author.familyName = req.body.familyName;
+    author.dateOfBirth = req.body.dateOfBirth ? new Date(req.body.dateOfBirth) : undefined;
+    author.dateOfDeath = req.body.dateOfDeath ? new Date(req.body.dateOfDeath) : undefined;
+
+    if (!errors.isEmpty()) {
+      res.render('authors/form', {
+        title: 'Tạo Tác Giả',
+        author: author,
+        errors: errors.array()
+      });
+      return;
+    } else {
+      const authorExists = await findAuthorByName(req.body.firstName, req.body.familyName);
+      if (authorExists) {
+        res.redirect(`/authors/${authorExists.id}`);
+      } else {
+        await saveAuthor(author);
+        res.redirect(`/authors/${author.id}`);
+      }
+    }
+  })
+];
 
 // Hiển thị form xóa tác giả trong GET.
 export const authorDeleteGet = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-  res.send(`NOT IMPLEMENTED: Author delete GET: ${req.params.id}`);
+  const author = await validateAuthor(req, res);
+  if (author) {
+    const authorBooks = author?.books;
+    res.render('authors/delete', {
+      title: i18next.t('delete_author_title'),
+      author,
+      authorBooks
+    });
+  }
 });
 
 // Xử lý xóa tác giả trong POST.
 export const authorDeletePost = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-  res.send('NOT IMPLEMENTED: Author delete POST');
+  const author = await validateAuthor(req, res);
+  if (author) {
+    const authorBooks = author?.books;
+    if (authorBooks.length > 0) {
+      res.render('authors/delete', {
+        title: i18next.t('delete_author_title'),
+        author,
+        authorBooks
+      });
+      return;
+    } else {
+      await authorService.deleteAuthorById(author.id);
+      res.redirect('/authors');
+    }
+  }
 });
 
 // Hiển thị form cập nhật tác giả trong GET.
